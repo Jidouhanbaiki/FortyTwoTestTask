@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'apps.hello',
+    'apps.contacts',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -127,3 +128,9 @@ TEMPLATE_DIRS = (
 
 # Turn off south during test
 SOUTH_TESTS_MIGRATE = False
+ 
+ 
+FIXTURE_DIRS = (
+   'var/git/FortyTwoTestTask/fixtures/',
+
+)
