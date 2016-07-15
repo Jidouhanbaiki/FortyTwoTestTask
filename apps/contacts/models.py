@@ -8,6 +8,9 @@ class Other(models.Model):
     def __unicode__(self):
         return self.left + ": " + self.right
 
+    def to_list(self):
+        return [self.left, self.right]
+
 
 class Contact(models.Model):
     name = models.CharField(max_length=48)
@@ -21,3 +24,6 @@ class Contact(models.Model):
 
     def __unicode__(self):
         return self.name + " " + self.surname
+
+    def get_absolute_url(self):
+        return "/people/%i/" % self.id

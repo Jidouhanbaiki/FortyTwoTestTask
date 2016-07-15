@@ -25,21 +25,22 @@ span {
     <div class="row">
         <div class="col-md-6">
                 <div class="panel panel-default">
-                <div class="panel-body"><span>Name:</span> {{ name }} </div>
-                <div class="panel-body"><span>Last name:</span> {{ surname }} </div>
-                <div class="panel-body"><span>Date of birth:</span> {{ birthdate }} </div>
+                <div class="panel-body"><span>Name:</span> {{ contact.name }} </div>
+                <div class="panel-body"><span>Last name:</span> {{ contact.surname }} </div>
+                <div class="panel-body"><span>Date of birth:</span> {{ contact.birthdate }} </div>
                 <div class="panel-body">
-                    <span>Bio:</span><br> {{ bio }}
-                    I have studied Translation and then Applied Linguistics as my second degree. Acquire the Master Degree in Applie Linguistics recently. I guess it is not as cool as studying Computer Science or getting a related degree initially, but at least I we had a couple of Computational Linguistics related courses.
+                    <span>Bio:</span><br> {{ contact.bio }}
                 </div>
             </div>
         </div>
         <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading"><span>Contacts</span></div>
-                <div class="panel-body"><span>Email:</span> <a href="mailto:{{ email }}"> {{ email }}</a> </div>
-                <div class="panel-body"><span>Jabber:</span> {{ jabber }}</div>
-                <div class="panel-body"><span>Skype:</span> {{ skype }}</div>
+                <div class="panel-body"><span>Email:</span>
+                    <a href="mailto:{{ contact.email }}"> {{ contact.email }}</a>
+                </div>
+                <div class="panel-body"><span>Jabber:</span> {{ contact.jabber }}</div>
+                <div class="panel-body"><span>Skype:</span> {{ contact.skype }}</div>
                 <div class="panel-body"><span>Other contacts:</span></div>
                 {% for label, text in other %}
                  <div class="panel-body">

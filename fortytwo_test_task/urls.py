@@ -1,13 +1,18 @@
 from django.conf.urls import patterns, include, url
 
+from apps.contacts.views import ContactDetailView
+
 from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns(
     '',
-    # url(r'^$', TemplateView.as_view(template_name='index.html')),
-    url(r'^$', 'contacts.views.index', name='contacts'),
-    # url(r'^blog/', include('blog.urls')),
+    url(
+        r'^people/(?P<pk>[0-9]+)/$',
+        ContactDetailView.as_view(),
+        name='contacts'
+        ),
+    url(r'^$', 'contacts.views.index', name='index'),
 
     url(r'^admin/', include(admin.site.urls)),
 )
