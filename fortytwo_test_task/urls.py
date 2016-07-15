@@ -6,8 +6,8 @@ admin.autodiscover()
 
 urlpatterns = patterns(
     '',
-    url(r'^$', TemplateView.as_view(template_name='index.html')),
-    # url(r'^$', 'fortytwo_test_task.views.contacts', name=1'contacts'),
+    # url(r'^$', TemplateView.as_view(template_name='index.html')),
+    url(r'^$', 'contacts.views.index', name='contacts'),
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
