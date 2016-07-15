@@ -4,28 +4,6 @@ from .models import Contact, Other
 import datetime
 
 
-class ViewsTestCase(TestCase):
-    def setUp(self):
-        self.c = Client()
-        pass
-
-    def test_contacts_view(self):
-        """
-        Test all views in this app.
-        """
-        response = self.c.get('/')
-        self.assertEqual(200, response.status_code)
-        self.assertTemplateUsed(response, 'contacts/index.html')
-        self.assertEqual(response.request['REQUEST_METHOD'], 'GET')
-        self.assertEqual(self.c.get('randompagename').status_code, 404)
-        self.assertEqual(response.context['name'], 'Andrii')
-        self.assertEqual(response.context['surname'], 'Shatov')
-        self.assertEqual(response.context['birthdate'], '17.01.1988')
-        self.assertEqual(response.context['jabber'], 'andrewshatov@42cc.co')
-        self.assertEqual(len(response.context['other'][0]), 2)
-        self.assertEqual(type(response.context['bio']), type("string"))
-
-
 class ModelOtherTestCase(TestCase):
     def setUp(self):
         Other.objects.create(
@@ -79,3 +57,20 @@ class ModelsTestCase(TestCase):
         other = person.other.filter(right="Some phone number")[0]
         self.assertEqual(other.left, "Phone")
         self.assertEqual(str(other), "Phone: Some phone number")
+
+    def test_contacts_view(self):
+        """
+        Test all views in this app.
+        """
+        response = Client().get('/')
+        self.assertEqual(200, response.status_code)
+        self.assertTemplateUsed(response, 'contacts/index.html')
+        self.assertEqual(response.request['REQUEST_METHOD'], 'GET')
+        self.assertEqual(Client().get('randompagename8787').status_code, 404)
+        self.assertEqual(response.context['name'], 'Oliver')
+        self.assertEqual(response.context['surname'], 'Twist')
+        self.assertEqual(response.context['birthdate'], '10.02.2001')
+        self.assertEqual(response.context['jabber'], 'jabber@jabber.com')
+        self.assertEqual(len(response.context['other'][0]), 2)
+        self.assertEqual(len(response.context['other'][0][0]), 'Phone')
+        self.assertEqual(type(response.context['bio']), type("string"))
