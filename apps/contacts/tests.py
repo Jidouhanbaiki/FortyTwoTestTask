@@ -20,6 +20,5 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.context['surname'], 'Shatov')
         self.assertEqual(response.context['birthdate'], '17.01.1988')
         self.assertEqual(response.context['jabber'], 'andrewshatov@42cc.co')
-        self.assertEqual(
-            response.context['other'],
-           ['Phone number', '+380 97 735 5246'])
+        self.assertEqual(len(response.context['other'][0]), 2)
+        self.assertEqual(type(response.context['bio']), type("string"))

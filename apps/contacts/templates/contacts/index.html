@@ -24,37 +24,29 @@ span {
     </div>
     <div class="row">
         <div class="col-md-6">
-            <div class="panel panel-default">
-            <div class="panel-body"><span>Name:</span> {{ name }} Andrii</div>
-            <div class="panel-body"><span>Last name:</span> {{ surname }} Shatov</div>
-            <div class="panel-body"><span>Date of birth:</span> {{ birthdate }} 17 01 1988</div>
-            <div class="panel-body">
-                <span>Bio:</span><br> {{ bio }}
-                I have studied Translation and then Applied Linguistics as my second degree. Acquire the Master Degree in Applie Linguistics recently. I guess it is not as cool as studying Computer Science or getting a related degree initially, but at least I we had a couple of Computational Linguistics related courses.
-            </div><
+                <div class="panel panel-default">
+                <div class="panel-body"><span>Name:</span> {{ name }} </div>
+                <div class="panel-body"><span>Last name:</span> {{ surname }} </div>
+                <div class="panel-body"><span>Date of birth:</span> {{ birthdate }} </div>
+                <div class="panel-body">
+                    <span>Bio:</span><br> {{ bio }}
+                    I have studied Translation and then Applied Linguistics as my second degree. Acquire the Master Degree in Applie Linguistics recently. I guess it is not as cool as studying Computer Science or getting a related degree initially, but at least I we had a couple of Computational Linguistics related courses.
+                </div>
             </div>
         </div>
         <div class="col-md-6">
             <div class="panel panel-default">
-            <div class="panel-heading"><span>Contacts</span></div>
-            <div class="panel-body"><span>Email:</span> <a href="mailto:{{ email }}"> {{ email }}</a> </div>
-            <div class="panel-body"><span>Jabber:</span> {{ jabber }}</div>
-            <div class="panel-body"><span>Skype:</span> {{ skype }}</div>
-            <div class="panel-body"><span>Other contacts:</span></div>
-            <div class="panel-body">
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Phone number:</span>
-                +380 97 735 5246
-            </div>
-            <div class="panel-body">
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Some other number:</span>
-                +380 97 735 5246
-            </div>
-            {% for label, text in other %}
-             <div class="panel-body">
-                <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ label }}:</span>
-                {{ text }}
-            </div>
-            {% endfor %}
+                <div class="panel-heading"><span>Contacts</span></div>
+                <div class="panel-body"><span>Email:</span> <a href="mailto:{{ email }}"> {{ email }}</a> </div>
+                <div class="panel-body"><span>Jabber:</span> {{ jabber }}</div>
+                <div class="panel-body"><span>Skype:</span> {{ skype }}</div>
+                <div class="panel-body"><span>Other contacts:</span></div>
+                {% for label, text in other %}
+                 <div class="panel-body">
+                    <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ label }}:</span>
+                    {{ text }}
+                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
