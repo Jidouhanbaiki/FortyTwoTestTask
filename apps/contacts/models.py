@@ -10,4 +10,14 @@ class Other(models.Model):
 
 
 class Contact(models.Model):
-    pass
+    name = models.CharField(max_length=48)
+    surname = models.CharField(max_length=48)
+    bio = models.CharField(max_length=512)
+    jabber = models.CharField(max_length=48)
+    skype = models.CharField(max_length=48)
+    email = models.CharField(max_length=48)
+    birthdate = models.DateField()
+    other = models.ManyToManyField(Other)
+
+    def __unicode__(self):
+        return self.name + " " + self.surname

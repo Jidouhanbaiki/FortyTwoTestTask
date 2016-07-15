@@ -25,21 +25,22 @@ class ViewsTestCase(TestCase):
         self.assertEqual(len(response.context['other'][0]), 2)
         self.assertEqual(type(response.context['bio']), type("string"))
 
+
 class ModelOtherTestCase(TestCase):
     def setUp(self):
-        other1 = Other(
+        Other.objects.create(
             left="Phone",
             right="Some phone number"
         )
-        other1.save()
 
     def test_basic_Other(self):
         """
         A simple test for Other model which tests
         how the object is converted to string.
         """
-        other = Contact.objects.filter(name="Phone")[0]
+        other = Other.objects.get(left="Phone")
         self.assertEqual(str(other), "Phone: Some phone number")
+
 
 class ModelsTestCase(TestCase):
     def setUp(self):
@@ -59,8 +60,9 @@ class ModelsTestCase(TestCase):
             bio="something lengthy I guess",
             jabber="jabber@jabber.com",
             skype="random",
-            birthdate=datetime.date(2001,10,02)
+            birthdate=datetime.date(2001, 10, 02)
         )
+        c.save()
         c.other.add(other1)
         c.other.add(other2)
         c.save()
@@ -73,7 +75,7 @@ class ModelsTestCase(TestCase):
         self.assertEqual(str(person), "Oliver Twist")
         self.assertTrue(isinstance(person, Contact))
         self.assertEqual(person.birthdate.year, 2001)
-        self.assertEqual(len(person.publications.all()), 2)
+        self.assertEqual(len(person.other.all()), 2)
         other = person.other.filter(right="Some phone number")[0]
         self.assertEqual(other.left, "Phone")
         self.assertEqual(str(other), "Phone: Some phone number")
