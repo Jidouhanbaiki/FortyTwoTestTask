@@ -5,8 +5,8 @@
 </style>
 <body>
 <h1>42 Coffee Cups Test Assignment</h1>
-<div style="display: table; ">
-<div style="width=30%; display: table-cell; padding-right: 5px;">
+<div style="display: table; table-layout: fixed; width: 100%;">
+<div style="width=40%; display: table-cell; padding-right: 5px;">
 <p>Name: {{ name }} Andrii</p>
 <p>Last name: {{ surname }} Shatov</p>
 <p>Date of birth: {{ birthdate }} 17 01 1988</p>
@@ -15,7 +15,7 @@ Studied Translation and then Applied Linguistics as my second degree. Acquire th
 
 </p>
 </div>
-<div  style="display: table-cell;">
+<div  style="display: table-cell; ">
 <p>Contacts</p>
 <p>Email: <a href="mailto:{{ email }}"> {{ email }}</a> </p>
 <p>Jabber: {{ jabber }}</p>
