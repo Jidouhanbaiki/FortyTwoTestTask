@@ -1,5 +1,7 @@
 from django.test import TestCase
 from django.test import Client
+from .models import Contact, Other
+import datetime
 
 
 class ViewsTestCase(TestCase):
@@ -22,3 +24,41 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.context['jabber'], 'andrewshatov@42cc.co')
         self.assertEqual(len(response.context['other'][0]), 2)
         self.assertEqual(type(response.context['bio']), type("string"))
+
+
+class ModelsTestCase(TestCase):
+    def setUp(self):
+        other1 = Other.objects.add(
+            left="Phone",
+            right="Some phone number"
+        )
+        other1.save()
+        other2 = Other.objects.add(
+            left="Second phone",
+            right="Another phone number"
+        )
+        other2.save()
+        c= Contact.objects.create(
+            name="Oliver",
+            surname="Twist",
+            bio="something lengthy I guess",
+            jabber="jabber@jabber.com",
+            skype="random",
+            birthdate=datetime.date(2001,10,02)
+        )
+        c.other.add(other1)
+        c.other.add(other2)
+        c.save()
+
+    def test_basic_contact_model(self):
+        """
+        Some very basic model test. Model is rather basic too, after all.
+        """
+        person = Contact.objects.get(name="Oliver")
+        self.assertEqual(str(person), "Oliver Twist")
+        self.assertTrue(isinstance(person, Contact))
+        self.assertEqual(person.birthdate.year, 2001)
+        self.assertEqual(len(person.publications.all()), 2)
+        other = person.other.get(right="Some phone number")
+        self.assertEqual(other.left, "Phone")
+        self.assertEqual(str(other), "Phone: Some phone number")
