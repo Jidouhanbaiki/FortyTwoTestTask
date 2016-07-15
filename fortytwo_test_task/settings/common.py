@@ -44,7 +44,7 @@ INSTALLED_APPS = (
 
     'apps.contacts',
 
-	'south',
+    'south',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -125,13 +125,13 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(BASE_DIR, 'templates'),
-	os.path.join(BASE_DIR, 'apps/contacts/templates/contacts/'),
+    os.path.join(BASE_DIR, 'apps/contacts/templates/contacts/'),
 )
 
 # Turn off south during test
 SOUTH_TESTS_MIGRATE = False
- 
- 
+
+
 FIXTURE_DIRS = (
    'var/git/FortyTwoTestTask/fixtures/',
 
