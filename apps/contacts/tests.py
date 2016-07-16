@@ -63,11 +63,7 @@ class ModelsTestCase(TestCase):
         """
         Test all views in this app.
         """
-        # self.assertEqual(302, Client().get('/').status_code)
-
-        person = Contact.objects.filter(name="Oliver")[0]
-        print person.id
-        response = Client().get('/people/' + str(person.id) + '/')
+        response = Client().get('/')
         self.assertEqual(200, response.status_code)
         self.assertTemplateUsed(response, 'contacts/contact_detail.html')
         self.assertEqual(response.request['REQUEST_METHOD'], 'GET')
