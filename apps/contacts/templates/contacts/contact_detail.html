@@ -14,7 +14,7 @@
             font-family: 'Neuton', serif;
         }
 
-        span {
+        span.bold {
             font-weight: bold;
         }
     </style>
@@ -28,32 +28,35 @@
         <div class="row">
             <div class="col-md-6">
                     <div class="panel panel-default">
-                    <div class="panel-body"><span>Name:</span> {{ contact.name }} </div>
-                    <div class="panel-body"><span>Last name:</span> {{ contact.surname }} </div>
-                    <div class="panel-body"><span>Date of birth:</span> {{ contact.birthdate }} </div>
+                    <div class="panel-body"><span class="bold">Name:</span> {{ contact.name }} </div>
+                    <div class="panel-body"><span class="bold">Last name:</span> {{ contact.surname }} </div>
+                    <div class="panel-body"><span class="bold">Date of birth:</span> {{ contact.birthdate }} </div>
                     <div class="panel-body">
-                        <span>Bio:</span><br> {{ contact.bio }}
+                        <span class="bold">Bio:</span><br> {{ contact.bio }}
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><span>Contacts</span></div>
-                    <div class="panel-body"><span>Email:</span>
+                    <div class="panel-heading"><span class="bold">Contacts</span></div>
+                    <div class="panel-body"><span class="bold">Email:</span>
                         <a href="mailto:{{ contact.email }}"> {{ contact.email }}</a>
                     </div>
-                    <div class="panel-body"><span>Jabber:</span> {{ contact.jabber }}</div>
-                    <div class="panel-body"><span>Skype:</span> {{ contact.skype }}</div>
-                    <div class="panel-body"><span>Other contacts:</span></div>
+                    <div class="panel-body"><span class="bold">Jabber:</span> {{ contact.jabber }}</div>
+                    <div class="panel-body"><span class="bold">Skype:</span> {{ contact.skype }}</div>
+                    <div class="panel-body"><span class="bold">Other contacts:</span></div>
                     {% for label, text in other %}
                      <div class="panel-body">
-                        <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ label }}:</span>
+                        <span class="bold"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ label }}:</span>
                         {{ text }}
                     </div>
                     {% endfor %}
                 </div>
             </div>
         </div>
+        <hr>
+
+        <a href="requests">Requests</a>
     </div>
 
 {% endblock content %}

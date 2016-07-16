@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %} HTTP requests {% endblock %}
+
+{% block extra_head %}
+    <link href="https://fonts.googleapis.com/css?family=Neuton" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <style>
+        body {
+         background-color: #f7f7f7;
+        }
+
+        h1 {
+            font-family: 'Neuton', serif;
+        }
+
+        .list-group {
+            list-style: decimal inside;
+        }
+
+        .list-group-item {
+            display: list-item;
+        }
+
+        #back-to-main {
+            margin: 10px;
+            float: left;
+        }
+    </style>
+{% endblock extra_head %}
+
+
+{% block content %}
+    <div id="back-to-main"><a href="/" >Back to Main Page</a></div>
+    <div class="container">
+            <div class="page-header">
+                <h1>Last 10 HTTP requests</h1>
+            </div>
+        <ol class="list-group">
+          <li class="list-group-item">Cras justo odio</li>
+          <li class="list-group-item">Dapibus ac facilisis in</li>
+          <li class="list-group-item">Morbi leo risus</li>
+          <li class="list-group-item">Porta ac consectetur ac</li>
+          <li class="list-group-item">Vestibulum at eros</li>
+          <li class="list-group-item">Cras justo odio</li>
+          <li class="list-group-item">Dapibus ac facilisis in</li>
+          <li class="list-group-item">Morbi leo risus</li>
+          <li class="list-group-item">Porta ac consectetur ac</li>
+          <li class="list-group-item">Vestibulum at eros</li>
+        </ol>
+    </div>
+
+{% endblock content %}
