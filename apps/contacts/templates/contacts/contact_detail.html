@@ -1,57 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+{% extends "base.html" %}
+
+{% block title %} Andrii Shatov {% endblock %}
+
+{% block extra_head %}
     <link href="https://fonts.googleapis.com/css?family=Neuton" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-</head>
-<style>
-body {
- background-color: #f7f7f7;
-}
+    <style>
+        body {
+         background-color: #f7f7f7;
+        }
 
-h1 {
-    font-family: 'Neuton', serif;
-}
+        h1 {
+            font-family: 'Neuton', serif;
+        }
 
-span {
-    font-weight: bold;
-}
-</style>
-<body>
-<div class="container">
-    <div class="page-header">
-        <h1>42 Coffee Cups Test Assignment</h1>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
+        span {
+            font-weight: bold;
+        }
+    </style>
+{% endblock extra_head %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-header">
+            <h1>42 Coffee Cups Test Assignment</h1>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                    <div class="panel panel-default">
+                    <div class="panel-body"><span>Name:</span> {{ contact.name }} </div>
+                    <div class="panel-body"><span>Last name:</span> {{ contact.surname }} </div>
+                    <div class="panel-body"><span>Date of birth:</span> {{ contact.birthdate }} </div>
+                    <div class="panel-body">
+                        <span>Bio:</span><br> {{ contact.bio }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
                 <div class="panel panel-default">
-                <div class="panel-body"><span>Name:</span> {{ contact.name }} </div>
-                <div class="panel-body"><span>Last name:</span> {{ contact.surname }} </div>
-                <div class="panel-body"><span>Date of birth:</span> {{ contact.birthdate }} </div>
-                <div class="panel-body">
-                    <span>Bio:</span><br> {{ contact.bio }}
+                    <div class="panel-heading"><span>Contacts</span></div>
+                    <div class="panel-body"><span>Email:</span>
+                        <a href="mailto:{{ contact.email }}"> {{ contact.email }}</a>
+                    </div>
+                    <div class="panel-body"><span>Jabber:</span> {{ contact.jabber }}</div>
+                    <div class="panel-body"><span>Skype:</span> {{ contact.skype }}</div>
+                    <div class="panel-body"><span>Other contacts:</span></div>
+                    {% for label, text in other %}
+                     <div class="panel-body">
+                        <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ label }}:</span>
+                        {{ text }}
+                    </div>
+                    {% endfor %}
                 </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading"><span>Contacts</span></div>
-                <div class="panel-body"><span>Email:</span>
-                    <a href="mailto:{{ contact.email }}"> {{ contact.email }}</a>
-                </div>
-                <div class="panel-body"><span>Jabber:</span> {{ contact.jabber }}</div>
-                <div class="panel-body"><span>Skype:</span> {{ contact.skype }}</div>
-                <div class="panel-body"><span>Other contacts:</span></div>
-                {% for label, text in other %}
-                 <div class="panel-body">
-                    <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ label }}:</span>
-                    {{ text }}
-                </div>
-                {% endfor %}
             </div>
         </div>
     </div>
 
-</div>
-</body>
-</html>
+{% endblock content %}
+
+
