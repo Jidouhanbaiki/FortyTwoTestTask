@@ -17,7 +17,7 @@ class Migration(DataMigration):
     models = {
         u'contacts.contact': {
             'Meta': {'object_name': 'Contact'},
-            'bio': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
+            'bio': ('django.db.models.fields.TextField', [], {}),
             'birthdate': ('django.db.models.fields.DateField', [], {}),
             'email': ('django.db.models.fields.CharField', [], {'max_length': '48'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),

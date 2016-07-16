@@ -15,7 +15,7 @@ class Other(models.Model):
 class Contact(models.Model):
     name = models.CharField(max_length=48)
     surname = models.CharField(max_length=48)
-    bio = models.CharField(max_length=512)
+    bio = models.TextField()
     jabber = models.CharField(max_length=48)
     skype = models.CharField(max_length=48)
     email = models.CharField(max_length=48)

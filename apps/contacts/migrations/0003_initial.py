@@ -21,7 +21,7 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=48)),
             ('surname', self.gf('django.db.models.fields.CharField')(max_length=48)),
-            ('bio', self.gf('django.db.models.fields.CharField')(max_length=512)),
+            ('bio', self.gf('django.db.models.fields.TextField')()),
             ('jabber', self.gf('django.db.models.fields.CharField')(max_length=48)),
             ('skype', self.gf('django.db.models.fields.CharField')(max_length=48)),
             ('email', self.gf('django.db.models.fields.CharField')(max_length=48)),
@@ -53,7 +53,7 @@ class Migration(SchemaMigration):
     models = {
         u'contacts.contact': {
             'Meta': {'object_name': 'Contact'},
-            'bio': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
+            'bio': ('django.db.models.fields.TextField', [], {}),
             'birthdate': ('django.db.models.fields.DateField', [], {}),
             'email': ('django.db.models.fields.CharField', [], {'max_length': '48'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),

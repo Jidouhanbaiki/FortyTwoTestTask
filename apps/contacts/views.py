@@ -4,7 +4,6 @@ from .models import Contact
 
 def index(request):
     context = {}
-    print Contact.objects.all()[0]
     c = Contact.objects.all()[0]
     other_list = []
     for o in c.other.all():
