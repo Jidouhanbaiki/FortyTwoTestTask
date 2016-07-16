@@ -1,8 +1,10 @@
 from django.test import TestCase
 from django.test import Client
-from .models import Contact, Other
+
 import datetime
 import types
+
+from .models import Contact, Other
 
 
 class ModelOtherTestCase(TestCase):
@@ -75,3 +77,32 @@ class ModelsTestCase(TestCase):
         self.assertEqual(contact.jabber, 'jabber@jabber.com')
         self.assertTrue(isinstance(contact.other.all()[0], Other))
         self.assertEqual(type(contact.bio), types.UnicodeType)
+
+
+class RequestViewTestCase(TestCase):
+    def test_request_logs_view(self):
+        response = Client().get('request/')
+        self.assertEqual(200, response.status_code)
+        self.assertTemplateUsed(response, 'contacts/requests.html')
+        self.assertEqual(response.request['REQUEST_METHOD'], 'GET')
+        logs = response.context['request_logs']
+        self.assertEqual(len(logs), 10)
+        self.assertEqual(type(logs), types.ListType)
+        for log in range(len(logs)):
+            self.assertEqual(log, RequestLog)
+            self.assertEqual(type(log.time.year), type(types.IntType))
+            self.assertEqual(log.path, type(types.StringType))
+            self.assertEqual(log.method, 'GET')
+
+
+
+
+"""
+class ModelsTestCase(TestCase):
+    def setUp(self):
+        RequestLog.objects.create(
+            time=datetime.datetime.now(),
+            path="/",
+            method="GET",
+            http_user_agent="Mozilla/5.0",
+        )"""
