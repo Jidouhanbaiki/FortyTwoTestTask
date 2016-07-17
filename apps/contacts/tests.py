@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.test import Client
-from .models import Contact, Other
+from .models import Contact
 import datetime
 import types
 
@@ -27,7 +27,7 @@ class ModelsTestCase(TestCase):
         self.assertTrue(isinstance(person, Contact))
         self.assertEqual(person.birthdate.year, 2001)
         other_contacts = person.other_contacts
-        self.assertEqual(type(other_contacts), types.StringType)
+        self.assertEqual(type(other_contacts), types.UnicodeType)
         self.assertTrue("Phone" in other_contacts)
 
     def test_contacts_view(self):
@@ -46,6 +46,6 @@ class ModelsTestCase(TestCase):
         self.assertEqual(contact.jabber, 'jabber@jabber.com')
         other_contacts = response.context['other_contacts']
         self.assertEqual(type(other_contacts[0]), types.ListType)
-        self.assertEqual(type(other_contacts[0][0]), types.StringType)
+        self.assertEqual(type(other_contacts[0][0]), types.UnicodeType)
         self.assertEqual(len(other_contacts), 2)
         self.assertEqual(type(contact.bio), types.UnicodeType)

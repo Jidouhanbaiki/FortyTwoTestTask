@@ -23,15 +23,9 @@ class Migration(DataMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'jabber': ('django.db.models.fields.CharField', [], {'max_length': '48'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '48'}),
-            'other': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['contacts.Other']", 'symmetrical': 'False'}),
+            'other_contacts': ('django.db.models.fields.TextField', [], {}),
             'skype': ('django.db.models.fields.CharField', [], {'max_length': '48'}),
             'surname': ('django.db.models.fields.CharField', [], {'max_length': '48'})
-        },
-        u'contacts.other': {
-            'Meta': {'object_name': 'Other'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'left': ('django.db.models.fields.CharField', [], {'max_length': '48'}),
-            'right': ('django.db.models.fields.CharField', [], {'max_length': '48'})
         }
     }
 
