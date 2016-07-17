@@ -32,16 +32,17 @@
                   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="
                   crossorigin="anonymous"></script>
     <script>
-    var rLogs = [];
+    var rLogs = []; // entries which should be displayed
+    var titleNumber = 0; // a number in the title, if 0 then title is default
 
-    // Generate initial mock data
+    // Generate initial mock entry
     function genMock() {
         var d = new Date();
         var t = d.getTime().toString();
         return t.substring(5) + " > some request info ";
     }
 
-    // fill the array with initial (mock) data
+    // fill the rLogs array with initial (mock) data
     function initMock() {
         for (i=0; i < 10; i++)
         {
@@ -49,10 +50,29 @@
         }
     }
 
-     // Display 10 latest entries
+    // Display the content of rLogs
     function displayData() {
-        for (i=0; i < 10; i++) {
-            $('li#' + (1 + i)).html(rLogs[i]);
+        $('span#rNumber').html(rLogs.length);
+        $('ol#logList').html("");
+        for (i=0; i < rLogs.length; i++) {
+            $('ol#logList').append(
+                "<li class='list-group-item' id=" + (i+1) + ">" + rLogs[i] + "</li>"
+                );
+        }
+
+        // Modify the title if there are new requests and page is not on focus
+        if(document.hasFocus()) {
+            titleNumber = 0;
+        }
+        else {
+            titleNumber = titleNumber + 1;
+        }
+
+        if (titleNumber > 0) {
+            document.title = "(" + titleNumber + ") new requests";
+        }
+        else {
+            document.title = "HTTP requests";
         }
     }
 
@@ -60,10 +80,10 @@
     function sendRequest() {
         $.ajax({
           method: "POST",
-          url: "/",
+          url: "/requests/",
+          data: "",
         })
         .fail(function( msg ) {
-            rLogs.pop();
             rLogs.unshift(genMock());
             displayData();
         });
@@ -72,7 +92,8 @@
     $(document).ready(function(){
         initMock();
         displayData();
-        setInterval(sendRequest, 2000);
+        sendRequest();
+        setInterval(sendRequest, 3000);
     });
 
 
@@ -82,12 +103,13 @@
 
 
 {% block content %}
+<body>
     <div id="back-to-main"><a href="/" >Back to Main Page</a></div>
     <div class="container">
             <div class="page-header">
-                <h1>Last 10 HTTP requests</h1>
+                <h1>Last <span id="rNumber">10</span> HTTP requests</h1>
             </div>
-        <ol class="list-group">
+        <ol class="list-group" id="logList">
           <li class="list-group-item" id="1">Cras justo odio</li>
           <li class="list-group-item" id="2">Dapibus ac facilisis in</li>
           <li class="list-group-item" id="3">Morbi leo risus</li>
@@ -100,5 +122,5 @@
           <li class="list-group-item" id="10">Vestibulum at eros</li>
         </ol>
     </div>
-
+</body>
 {% endblock content %}
