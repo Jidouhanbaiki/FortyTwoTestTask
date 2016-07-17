@@ -3,6 +3,7 @@ from django.test import Client
 
 import datetime
 import types
+import time
 
 from .models import Contact, Other
 
@@ -63,7 +64,7 @@ class ModelsTestCase(TestCase):
 
     def test_contacts_view(self):
         """
-        Test all views in this app.
+        Test the index view.
         """
         response = Client().get('/')
         self.assertEqual(200, response.status_code)
@@ -79,29 +80,27 @@ class ModelsTestCase(TestCase):
         self.assertEqual(type(contact.bio), types.UnicodeType)
 
 
-"""
 class RequestViewTestCase(TestCase):
-    def test_request_logs_view(self):
+    def test_request_logs_view_get(self):
+        """
+        Test request_logs view with the response sent by GET method.
+        Time variable is used for determining what requests to send.
+        """
         response = Client().get('request/')
         self.assertEqual(200, response.status_code)
         self.assertTemplateUsed(response, 'contacts/requests.html')
-        self.assertEqual(response.request['REQUEST_METHOD'], 'GET')
+        self.assertEqual(type(response.context['time']), types.StringType)
         logs = response.context['request_logs']
         self.assertEqual(len(logs), 10)
         self.assertEqual(type(logs), types.ListType)
-        for log in range(len(logs)):
-            self.assertEqual(log, RequestLog)
-            self.assertEqual(type(log.time.year), type(types.IntType))
-            self.assertEqual(log.path, type(types.StringType))
-            self.assertEqual(log.method, 'GET')
+        self.assertEqual(type(logs[0]), types.StringType)
 
-
-
-Class ModelsTestCase(TestCase):
-    def setUp(self):
-        RequestLog.objects.create(
-            time=datetime.datetime.now(),
-            path="/",
-            method="GET",
-            http_user_agent="Mozilla/5.0",
-        )"""
+    def test_request_logs_view_get(self):
+        """
+        Test request_logs view with the response sent by AJAX POST method.
+        """
+        request_time = time.time() - 500
+        response = Client().post('request/', {'time': str(request_time)})
+        self.assertGreater(response.context['time'], request_time)
+        self.assertEqual(type(response.context['request_logs']), types.ListType)
+        self.assertEqual(type(response.context['request_logs'][0]), types.StringType)
