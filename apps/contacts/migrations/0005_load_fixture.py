@@ -3,13 +3,12 @@ from south.utils import datetime_utils as datetime
 from south.db import db
 from south.v2 import DataMigration
 from django.db import models
-
 from django.core.management import call_command
 
 class Migration(DataMigration):
 
     def forwards(self, orm):
-		call_command("loaddata", "data.json")
+        call_command("loaddata", "data2.json")
 
     def backwards(self, orm):
         "Write your backwards methods here."
