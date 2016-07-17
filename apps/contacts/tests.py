@@ -79,6 +79,7 @@ class ModelsTestCase(TestCase):
         self.assertEqual(type(contact.bio), types.UnicodeType)
 
 
+"""
 class RequestViewTestCase(TestCase):
     def test_request_logs_view(self):
         response = Client().get('request/')
@@ -96,9 +97,7 @@ class RequestViewTestCase(TestCase):
 
 
 
-
-"""
-class ModelsTestCase(TestCase):
+Class ModelsTestCase(TestCase):
     def setUp(self):
         RequestLog.objects.create(
             time=datetime.datetime.now(),

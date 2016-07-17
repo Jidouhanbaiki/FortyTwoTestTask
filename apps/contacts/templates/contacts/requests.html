@@ -15,7 +15,7 @@
         }
 
         .list-group {
-            list-style: decimal inside;
+            list-style: decimal outside;
         }
 
         .list-group-item {
@@ -27,6 +27,57 @@
             float: left;
         }
     </style>
+    <script
+                  src="https://code.jquery.com/jquery-3.1.0.min.js"
+                  integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="
+                  crossorigin="anonymous"></script>
+    <script>
+    var rLogs = [];
+
+    // Generate initial mock data
+    function genMock() {
+        var d = new Date();
+        var t = d.getTime().toString();
+        return t.substring(5) + " > some request info ";
+    }
+
+    // fill the array with initial (mock) data
+    function initMock() {
+        for (i=0; i < 10; i++)
+        {
+            rLogs.push(genMock());
+        }
+    }
+
+     // Display 10 latest entries
+    function displayData() {
+        for (i=0; i < 10; i++) {
+            $('li#' + (1 + i)).html(rLogs[i]);
+        }
+    }
+
+    // Send an AJAX request
+    function sendRequest() {
+        $.ajax({
+          method: "POST",
+          url: "/",
+        })
+        .fail(function( msg ) {
+            rLogs.pop();
+            rLogs.unshift(genMock());
+            displayData();
+        });
+    }
+
+    $(document).ready(function(){
+        initMock();
+        displayData();
+        setInterval(sendRequest, 2000);
+    });
+
+
+
+    </script>
 {% endblock extra_head %}
 
 
@@ -37,16 +88,16 @@
                 <h1>Last 10 HTTP requests</h1>
             </div>
         <ol class="list-group">
-          <li class="list-group-item">Cras justo odio</li>
-          <li class="list-group-item">Dapibus ac facilisis in</li>
-          <li class="list-group-item">Morbi leo risus</li>
-          <li class="list-group-item">Porta ac consectetur ac</li>
-          <li class="list-group-item">Vestibulum at eros</li>
-          <li class="list-group-item">Cras justo odio</li>
-          <li class="list-group-item">Dapibus ac facilisis in</li>
-          <li class="list-group-item">Morbi leo risus</li>
-          <li class="list-group-item">Porta ac consectetur ac</li>
-          <li class="list-group-item">Vestibulum at eros</li>
+          <li class="list-group-item" id="1">Cras justo odio</li>
+          <li class="list-group-item" id="2">Dapibus ac facilisis in</li>
+          <li class="list-group-item" id="3">Morbi leo risus</li>
+          <li class="list-group-item" id="4">Porta ac consectetur ac</li>
+          <li class="list-group-item" id="5">Vestibulum at eros</li>
+          <li class="list-group-item" id="6">Cras justo odio</li>
+          <li class="list-group-item" id="7">Dapibus ac facilisis in</li>
+          <li class="list-group-item" id="8">Morbi leo risus</li>
+          <li class="list-group-item" id="9">Porta ac consectetur ac</li>
+          <li class="list-group-item" id="10">Vestibulum at eros</li>
         </ol>
     </div>
 
