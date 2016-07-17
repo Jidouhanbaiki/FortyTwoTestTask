@@ -134,6 +134,4 @@ SOUTH_TESTS_MIGRATE = False
 
 FIXTURE_DIRS = (
     os.path.join(BASE_DIR, 'fixtures'),
-    os.path.join(BASE_DIR, 'apps/contacts/templates/fixtures/'),
-
 )

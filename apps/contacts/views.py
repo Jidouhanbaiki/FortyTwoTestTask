@@ -5,9 +5,7 @@ from .models import Contact
 def index(request):
     context = {}
     c = Contact.objects.all()[0]
-    other_list = []
-    for o in c.other.all():
-        other_list.append(o.to_list())
-    context['other'] = other_list
+    arr_other = c.other_contacts.strip().split("\n")
+    context['other_contacts'] = [line.split(":") for line in arr_other]
     context['contact'] = c
     return render(request, "contacts/contact_detail.html", context)

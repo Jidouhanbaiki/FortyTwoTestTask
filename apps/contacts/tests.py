@@ -1,49 +1,21 @@
 from django.test import TestCase
 from django.test import Client
-from .models import Contact, Other
+from .models import Contact
 import datetime
 import types
 
 
-class ModelOtherTestCase(TestCase):
-    def setUp(self):
-        Other.objects.create(
-            left="MyPhone",
-            right="Some phone number"
-        )
-
-    def test_basic_Other(self):
-        """
-        A simple test for Other model which tests
-        how the object is converted to string.
-        """
-        other = Other.objects.filter(left="MyPhone")[0]
-        self.assertEqual(str(other), "MyPhone: Some phone number")
-
-
 class ModelsTestCase(TestCase):
     def setUp(self):
-        other1 = Other(
-            left="Phone",
-            right="Some phone number"
-        )
-        other1.save()
-        other2 = Other(
-            left="Second phone",
-            right="Another phone number"
-        )
-        other2.save()
         c = Contact(
             name="Oliver",
             surname="Twist",
             bio="something lengthy I guess",
             jabber="jabber@jabber.com",
             skype="random",
-            birthdate=datetime.date(2001, 10, 02)
+            birthdate=datetime.date(2001, 10, 02),
+            other_contacts="Phone: +1 100 472 4930\nFax: +1 300 474 4930\n"
         )
-        c.save()
-        c.other.add(other1)
-        c.other.add(other2)
         c.save()
 
     def test_basic_contact_model(self):
@@ -54,10 +26,9 @@ class ModelsTestCase(TestCase):
         self.assertEqual(str(person), "Oliver Twist")
         self.assertTrue(isinstance(person, Contact))
         self.assertEqual(person.birthdate.year, 2001)
-        self.assertEqual(len(person.other.all()), 2)
-        other = person.other.filter(right="Some phone number")[0]
-        self.assertEqual(other.left, "Phone")
-        self.assertEqual(str(other), "Phone: Some phone number")
+        other_contacts = person.other_contacts
+        self.assertEqual(type(other_contacts), types.UnicodeType)
+        self.assertTrue("Phone" in other_contacts)
 
     def test_contacts_view(self):
         """
@@ -73,5 +44,8 @@ class ModelsTestCase(TestCase):
         self.assertEqual(contact.surname, 'Twist')
         self.assertEqual(contact.birthdate, datetime.date(2001, 10, 2))
         self.assertEqual(contact.jabber, 'jabber@jabber.com')
-        self.assertTrue(isinstance(contact.other.all()[0], Other))
+        other_contacts = response.context['other_contacts']
+        self.assertEqual(type(other_contacts[0]), types.ListType)
+        self.assertEqual(type(other_contacts[0][0]), types.UnicodeType)
+        self.assertEqual(len(other_contacts), 2)
         self.assertEqual(type(contact.bio), types.UnicodeType)
