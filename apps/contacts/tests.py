@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.test import Client
 from django.test import RequestFactory
 from .models import Contact
+from .models import RequestLog
 from .contacts import RequestLoggingMiddleware
 import datetime
 import time
@@ -9,7 +10,7 @@ import types
 import json
 
 
-class ModelOneInstanceTestCase(TestCase):
+class ModelOneContactInstanceTestCase(TestCase):
     def setUp(self):
         c = Contact(
             name="Oliver",
@@ -135,3 +136,29 @@ class RequestLoggingMiddlewareTest(TestCase):
         logging_mw = RequestLoggingMiddleware()
         request = factory.get('/requests/')
         self.assertEqual(logging_mw.process_request(request), None)
+
+
+class RequestLogModelTestCase(TestCase):
+    def setUp(self):
+        self.t = time.time()
+        RequestLog.objects.create(
+            method="GET",
+            path="/",
+            remote_addr="127.0.0.1",
+            http_user_agent="Mozilla",
+            username="myName",
+            time=self.t,
+        )
+
+    def test_model_string_representation(self):
+        entry = RequestLog.objects.first()
+        self.assertEqual(str(entry), "myName GET Mozilla " + time.ctime(self.t))
+
+    def test_middleware_to_database(self):
+        Client().get("/")
+        entry = RequestLog.objects.first()
+        self.assertEqual(entry.path, '/')
+        self.assertEqual(entry.method, 'GET')
+        self.assertEqual(len(RequestLog.objects.all()), 2)
+        Client().post("/requests/")
+        self.assertEqual(len(RequestLog.objects.all()), 2)

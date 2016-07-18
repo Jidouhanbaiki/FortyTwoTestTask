@@ -18,7 +18,6 @@ def index(request):
 
 
 def request_logs(request):
-
     if request.method == 'POST':
         if request.is_ajax():
             logs = [str(int(time.time() * 1000))[-6:] + " new data"
