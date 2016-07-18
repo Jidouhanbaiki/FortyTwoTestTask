@@ -1,66 +1,34 @@
 from django.test import TestCase
 from django.test import Client
-
+from .models import Contact
 import datetime
 import types
 import time
 
-from .models import Contact, Other
-
-
-class ModelOtherTestCase(TestCase):
+class ModelOneInstanceTestCase(TestCase):
     def setUp(self):
-        Other.objects.create(
-            left="MyPhone",
-            right="Some phone number"
-        )
-
-    def test_basic_Other(self):
-        """
-        A simple test for Other model which tests
-        how the object is converted to string.
-        """
-        other = Other.objects.filter(left="MyPhone")[0]
-        self.assertEqual(str(other), "MyPhone: Some phone number")
-
-
-class ModelsTestCase(TestCase):
-    def setUp(self):
-        other1 = Other(
-            left="Phone",
-            right="Some phone number"
-        )
-        other1.save()
-        other2 = Other(
-            left="Second phone",
-            right="Another phone number"
-        )
-        other2.save()
         c = Contact(
             name="Oliver",
             surname="Twist",
             bio="something lengthy I guess",
             jabber="jabber@jabber.com",
             skype="random",
-            birthdate=datetime.date(2001, 10, 02)
+            birthdate=datetime.date(2001, 10, 02),
+            other_contacts="Phone: +1 100 472 4930\nFax: +1 300 474 4930\n"
         )
-        c.save()
-        c.other.add(other1)
-        c.other.add(other2)
         c.save()
 
     def test_basic_contact_model(self):
         """
-        Some very basic model test. Model is rather basic too, after all.
+        Some very basic model test. There is only one contact instance in DB.
         """
         person = Contact.objects.filter(name="Oliver")[0]
         self.assertEqual(str(person), "Oliver Twist")
         self.assertTrue(isinstance(person, Contact))
         self.assertEqual(person.birthdate.year, 2001)
-        self.assertEqual(len(person.other.all()), 2)
-        other = person.other.filter(right="Some phone number")[0]
-        self.assertEqual(other.left, "Phone")
-        self.assertEqual(str(other), "Phone: Some phone number")
+        other_contacts = person.other_contacts
+        self.assertEqual(type(other_contacts), types.UnicodeType)
+        self.assertTrue("Phone" in other_contacts)
 
     def test_contacts_view(self):
         """
@@ -76,7 +44,10 @@ class ModelsTestCase(TestCase):
         self.assertEqual(contact.surname, 'Twist')
         self.assertEqual(contact.birthdate, datetime.date(2001, 10, 2))
         self.assertEqual(contact.jabber, 'jabber@jabber.com')
-        self.assertTrue(isinstance(contact.other.all()[0], Other))
+        other_contacts = response.context['other_contacts']
+        self.assertEqual(type(other_contacts[0]), types.ListType)
+        self.assertEqual(type(other_contacts[0][0]), types.UnicodeType)
+        self.assertEqual(len(other_contacts), 2)
         self.assertEqual(type(contact.bio), types.UnicodeType)
 
 
@@ -95,7 +66,7 @@ class RequestViewTestCase(TestCase):
         self.assertEqual(type(logs), types.ListType)
         self.assertEqual(type(logs[0]), types.StringType)
 
-    def test_request_logs_view_get(self):
+    def test_request_logs_view_post(self):
         """
         Test request_logs view with the response sent by AJAX POST method.
         """
@@ -104,3 +75,44 @@ class RequestViewTestCase(TestCase):
         self.assertGreater(response.context['time'], request_time)
         self.assertEqual(type(response.context['request_logs']), types.ListType)
         self.assertEqual(type(response.context['request_logs'][0]), types.StringType)
+
+
+class NoContactInstancesInDBTestCase(TestCase):
+    def test_no_contact_instances_in_db(self):
+        """
+        Test the case when there are no Contact instances in DB at all.
+        The view will create an empty object and send it to context,
+        but it will not save the object in the database.
+        """
+        response = Client().get('/')
+        self.assertEqual(200, response.status_code)
+        contact = response.context['contact']
+        self.assertTrue(isinstance(contact, Contact))
+        other_contacts = response.context['other_contacts']
+        self.assertEqual(type(other_contacts[0]), types.ListType)
+        self.assertFalse(Contact.objects.all())
+
+
+class MultipleContactInstancesinDBTestCase(TestCase):
+    def setUp(self):
+        Contact.objects.create(
+            name="First",
+            surname="One",
+            birthdate=datetime.date.today(),
+        )
+        Contact.objects.create(
+            name="Second",
+            surname="Two",
+            birthdate=datetime.date.today(),
+        )
+
+    def test_multiple_contact_instances_in_db(self):
+        """
+        Test the case when there are multiple Contact instances in DB.
+        The view will always select a first instance,
+        since the database should have only 1 instance for now.
+        """
+        response = Client().get('/')
+        self.assertEqual(200, response.status_code)
+        contact = response.context['contact']
+        self.assertEqual(str(contact), "First One")

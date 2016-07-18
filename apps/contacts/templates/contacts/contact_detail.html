@@ -45,9 +45,9 @@
                     <div class="panel-body"><span class="bold">Jabber:</span> {{ contact.jabber }}</div>
                     <div class="panel-body"><span class="bold">Skype:</span> {{ contact.skype }}</div>
                     <div class="panel-body"><span class="bold">Other contacts:</span></div>
-                    {% for label, text in other %}
+                    {% for label, text in other_contacts %}
                      <div class="panel-body">
-                        <span class="bold"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ label }}:</span>
+                        <span class="bold" style="margin-left: 70px"> {{ label }}:</span>
                         {{ text }}
                     </div>
                     {% endfor %}
