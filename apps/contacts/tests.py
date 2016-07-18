@@ -135,4 +135,3 @@ class RequestLoggingMiddlewareTest(TestCase):
         logging_mw = RequestLoggingMiddleware()
         request = factory.get('/requests/')
         self.assertEqual(logging_mw.process_request(request), None)
-
