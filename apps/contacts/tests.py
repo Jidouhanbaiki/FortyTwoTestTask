@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.test import Client
 from .models import Contact
 import datetime
+import time
 import types
 
 
@@ -105,3 +106,13 @@ class RequestViewTestCase(TestCase):
         self.assertEqual(len(logs), 10)
         self.assertEqual(type(logs), types.ListType)
         self.assertEqual(type(logs[0]), types.StringType)
+
+    def test_request_logs_view_post(self):
+        """
+        Test request_logs view with the response sent by AJAX POST method.
+        """
+        request_time = time.time() - 500
+        response = Client().post('/requests/', {'time': request_time})
+        self.assertEqual(200, response.status_code)
+        self.assertGreater(response.context['time'], request_time)
+        self.assertEqual(type(response.context['request_logs']), types.ListType)
