@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from .models import Contact
 import time
+import json
 
 from django.http import HttpResponseBadRequest
+from django.http import HttpResponse
 
 
 def index(request):
@@ -16,11 +18,22 @@ def index(request):
 
 
 def request_logs(request):
-    if request.method == 'POST':
-        return HttpResponseBadRequest("Not implemented!")
 
+    if request.method == 'POST':
+        if request.is_ajax():
+            logs = [str(int(time.time() * 1000))[-6:] + " new data"
+                    for i in range(2)]
+            content = {
+                'time': int(time.time() * 1000),
+                'request_logs': logs,
+            }
+
+            return HttpResponse(
+                json.dumps(content),
+                content_type="application/json",
+            )
+        return HttpResponseBadRequest("Not implemented!")
     logs = [str(int(time.time()*1000))[-6:] + " init data" for i in range(10)]
-    print logs[0]
     context = {
         'time': int(time.time() * 1000),
         'request_logs': logs,

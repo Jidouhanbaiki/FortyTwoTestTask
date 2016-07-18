@@ -4,6 +4,7 @@ from .models import Contact
 import datetime
 import time
 import types
+import json
 
 
 class ModelOneInstanceTestCase(TestCase):
@@ -112,7 +113,12 @@ class RequestViewTestCase(TestCase):
         Test request_logs view with the response sent by AJAX POST method.
         """
         request_time = time.time() - 500
-        response = Client().post('/requests/', {'time': request_time})
+        response = Client().post(
+            '/requests/',
+            {'time': request_time},
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
         self.assertEqual(200, response.status_code)
-        self.assertGreater(response.context['time'], request_time)
-        self.assertEqual(type(response.context['request_logs']), types.ListType)
+        content = json.loads(response._container[0])
+        self.assertGreater(content['time'], request_time)
+        self.assertEqual(type(content['request_logs']), types.ListType)

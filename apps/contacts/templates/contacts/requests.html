@@ -34,7 +34,7 @@
     <script>
     var titleNumber = 0; // a number in the title, if 0 then title is default
     var time = {{ time }};
-
+    var csrftoken = '{{ csrf_token }}';
     // entries which should be displayed
     var rLogs = {% autoescape off %} {{ request_logs }} {% endautoescape %};
 
@@ -77,22 +77,33 @@
         $.ajax({
           method: "POST",
           url: "/requests/",
-          data: time,
+          data: JSON.stringify(time),
+          dataType: "json",
         })
-        .fail(function( msg ) {
+        .done(function( msg ) {
             rLogs.pop();
             rLogs.unshift(genMock());
             displayData();
         });
     }
 
+    function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
     $(document).ready(function(){
         displayData();
         sendRequest();
         setInterval(sendRequest, 3000);
     });
-
-
 
     </script>
 {% endblock extra_head %}
