@@ -62,7 +62,7 @@ class NoContactInstancesInDBTestCase(TestCase):
         self.assertEqual(200, response.status_code)
         self.assertEqual(response.context['contact'], None)
         with self.assertRaises(KeyError):
-            r = response.context['other_contacts']
+            response.context['other_contacts']
         self.assertFalse(Contact.objects.all())
 
 
