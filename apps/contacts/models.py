@@ -1,4 +1,5 @@
 from django.db import models
+import time
 
 
 class Contact(models.Model):
@@ -13,3 +14,20 @@ class Contact(models.Model):
 
     def __unicode__(self):
         return self.name + " " + self.surname
+
+
+class RequestLog(models.Model):
+    method = models.CharField(max_length=32)
+    path = models.CharField(max_length=32)
+    remote_addr = models.CharField(max_length=32)
+    http_user_agent = models.CharField(max_length=256)
+    username = models.CharField(max_length=256)
+    time = models.FloatField()
+
+    def __str__(self):
+        return "{0} {1} {2} {3}".format(
+            self.username,
+            self.method,
+            self.http_user_agent,
+            time.ctime(self.time)
+        )

@@ -140,7 +140,7 @@ class RequestLoggingMiddlewareTest(TestCase):
 
 class RequestLogModelTestCase(TestCase):
     def setUp(self):
-        self.t = time.time()
+        self.t = int(time.time() * 1000)
         RequestLog.objects.create(
             method="GET",
             path="/",
@@ -151,14 +151,22 @@ class RequestLogModelTestCase(TestCase):
         )
 
     def test_model_string_representation(self):
+        """
+        Test if string representation of the model is generated properly
+        """
         entry = RequestLog.objects.first()
-        self.assertEqual(str(entry), "myName GET Mozilla " + time.ctime(self.t))
+        self.assertEqual(
+            str(entry), "myName GET Mozilla " + time.ctime(self.t)
+        )
 
     def test_middleware_to_database(self):
+        """
+        Test if middleware stores data in the database.
+        """
         Client().get("/")
         entry = RequestLog.objects.first()
         self.assertEqual(entry.path, '/')
         self.assertEqual(entry.method, 'GET')
         self.assertEqual(len(RequestLog.objects.all()), 2)
-        Client().post("/requests/")
+        Client().post("/requests/", HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assertEqual(len(RequestLog.objects.all()), 2)
