@@ -2,7 +2,6 @@ from django.test import TestCase
 from django.test import Client
 from .models import Contact
 import datetime
-import time
 import types
 
 
@@ -99,7 +98,7 @@ class RequestViewTestCase(TestCase):
         Test request_logs view with the response sent by GET method.
         Time variable is used for determining what requests to send.
         """
-        response = Client().get('request/')
+        response = Client().get('/requests/')
         self.assertEqual(200, response.status_code)
         self.assertTemplateUsed(response, 'contacts/requests.html')
         self.assertEqual(type(response.context['time']), types.IntType)
