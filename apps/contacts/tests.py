@@ -60,10 +60,9 @@ class NoContactInstancesInDBTestCase(TestCase):
         """
         response = Client().get('/')
         self.assertEqual(200, response.status_code)
-        contact = response.context['contact']
-        self.assertTrue(isinstance(contact, Contact))
-        other_contacts = response.context['other_contacts']
-        self.assertEqual(type(other_contacts[0]), types.ListType)
+        self.assertEqual(response.context['contact'], None)
+        with self.assertRaises(KeyError):
+            r = response.context['other_contacts']
         self.assertFalse(Contact.objects.all())
 
 
