@@ -55,7 +55,8 @@ class NoContactInstancesInDBTestCase(TestCase):
     def test_no_contact_instances_in_db(self):
         """
         Test the case when there are no Contact instances in DB at all.
-        The view will create an empty object and send it to context.
+        The view will create an empty object and send it to context,
+        but it will not save the object in the database.
         """
         response = Client().get('/')
         self.assertEqual(200, response.status_code)
@@ -63,6 +64,7 @@ class NoContactInstancesInDBTestCase(TestCase):
         self.assertTrue(isinstance(contact, Contact))
         other_contacts = response.context['other_contacts']
         self.assertEqual(type(other_contacts[0]), types.ListType)
+        self.assertFalse(Contact.objects.all())
 
 
 class MultipleContactInstancesinDBTestCase(TestCase):
@@ -70,10 +72,12 @@ class MultipleContactInstancesinDBTestCase(TestCase):
         Contact.objects.create(
             name="First",
             surname="One",
+            birthdate=datetime.date.today(),
         )
         Contact.objects.create(
             name="Second",
             surname="Two",
+            birthdate=datetime.date.today(),
         )
 
     def test_multiple_contact_instances_in_db(self):
