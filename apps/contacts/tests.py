@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.test import Client
 from .models import Contact
 import datetime
+import time
 import types
 
 
@@ -90,3 +91,19 @@ class MultipleContactInstancesinDBTestCase(TestCase):
         self.assertEqual(200, response.status_code)
         contact = response.context['contact']
         self.assertEqual(str(contact), "First One")
+
+
+class RequestViewTestCase(TestCase):
+    def test_request_logs_view_get(self):
+        """
+        Test request_logs view with the response sent by GET method.
+        Time variable is used for determining what requests to send.
+        """
+        response = Client().get('request/')
+        self.assertEqual(200, response.status_code)
+        self.assertTemplateUsed(response, 'contacts/requests.html')
+        self.assertEqual(type(response.context['time']), types.IntType)
+        logs = response.context['request_logs']
+        self.assertEqual(len(logs), 10)
+        self.assertEqual(type(logs), types.ListType)
+        self.assertEqual(type(logs[0]), types.StringType)
