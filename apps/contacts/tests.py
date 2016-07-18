@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.test import Client
+from django.test import RequestFactory
 from .models import Contact
+from .contacts import RequestLoggingMiddleware
 import datetime
 import time
 import types
@@ -122,3 +124,15 @@ class RequestViewTestCase(TestCase):
         content = json.loads(response._container[0])
         self.assertGreater(content['time'], request_time)
         self.assertEqual(type(content['request_logs']), types.ListType)
+
+
+class RequestLoggingMiddlewareTest(TestCase):
+    def test_request_logging_middleware(self):
+        """
+        Test the middleware which will read the request data and save it.
+        """
+        factory = RequestFactory()
+        logging_mw = RequestLoggingMiddleware()
+        request = factory.get('/requests/')
+        self.assertEqual(logging_mw.process_request(request), None)
+
