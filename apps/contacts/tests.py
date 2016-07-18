@@ -5,7 +5,7 @@ import datetime
 import types
 
 
-class ModelsTestCase(TestCase):
+class ModelOneInstanceTestCase(TestCase):
     def setUp(self):
         c = Contact(
             name="Oliver",
@@ -20,7 +20,7 @@ class ModelsTestCase(TestCase):
 
     def test_basic_contact_model(self):
         """
-        Some very basic model test. Model is rather basic too, after all.
+        Some very basic model test. There is only one contact instance in DB.
         """
         person = Contact.objects.filter(name="Oliver")[0]
         self.assertEqual(str(person), "Oliver Twist")
@@ -49,3 +49,40 @@ class ModelsTestCase(TestCase):
         self.assertEqual(type(other_contacts[0][0]), types.UnicodeType)
         self.assertEqual(len(other_contacts), 2)
         self.assertEqual(type(contact.bio), types.UnicodeType)
+
+
+class NoContactInstancesInDBTestCase(TestCase):
+    def test_no_contact_instances_in_db(self):
+        """
+        Test the case when there are no Contact instances in DB at all.
+        The view will create an empty object and send it to context.
+        """
+        response = Client().get('/')
+        self.assertEqual(200, response.status_code)
+        contact = response.context['contact']
+        self.assertTrue(isinstance(contact, Contact))
+        other_contacts = response.context['other_contacts']
+        self.assertEqual(type(other_contacts[0]), types.ListType)
+
+
+class MultipleContactInstancesinDBTestCase(TestCase):
+    def setUp(self):
+        Contact.objects.create(
+            name="First",
+            surname="One",
+        )
+        Contact.objects.create(
+            name="Second",
+            surname="Two",
+        )
+
+    def test_multiple_contact_instances_in_db(self):
+        """
+        Test the case when there are multiple Contact instances in DB.
+        The view will always select a first instance,
+        since the database should have only 1 instance for now.
+        """
+        response = Client().get('/')
+        self.assertEqual(200, response.status_code)
+        contact = response.context['contact']
+        self.assertEqual(str(contact), "First One")
