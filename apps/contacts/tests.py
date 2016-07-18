@@ -3,7 +3,7 @@ from django.test import Client
 from .models import Contact
 import datetime
 import types
-import time
+
 
 class ModelOneInstanceTestCase(TestCase):
     def setUp(self):
@@ -49,32 +49,6 @@ class ModelOneInstanceTestCase(TestCase):
         self.assertEqual(type(other_contacts[0][0]), types.UnicodeType)
         self.assertEqual(len(other_contacts), 2)
         self.assertEqual(type(contact.bio), types.UnicodeType)
-
-
-class RequestViewTestCase(TestCase):
-    def test_request_logs_view_get(self):
-        """
-        Test request_logs view with the response sent by GET method.
-        Time variable is used for determining what requests to send.
-        """
-        response = Client().get('request/')
-        self.assertEqual(200, response.status_code)
-        self.assertTemplateUsed(response, 'contacts/requests.html')
-        self.assertEqual(type(response.context['time']), types.StringType)
-        logs = response.context['request_logs']
-        self.assertEqual(len(logs), 10)
-        self.assertEqual(type(logs), types.ListType)
-        self.assertEqual(type(logs[0]), types.StringType)
-
-    def test_request_logs_view_post(self):
-        """
-        Test request_logs view with the response sent by AJAX POST method.
-        """
-        request_time = time.time() - 500
-        response = Client().post('request/', {'time': str(request_time)})
-        self.assertGreater(response.context['time'], request_time)
-        self.assertEqual(type(response.context['request_logs']), types.ListType)
-        self.assertEqual(type(response.context['request_logs'][0]), types.StringType)
 
 
 class NoContactInstancesInDBTestCase(TestCase):

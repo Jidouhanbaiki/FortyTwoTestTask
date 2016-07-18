@@ -84,6 +84,7 @@
           data: "",
         })
         .fail(function( msg ) {
+            rLogs.pop();
             rLogs.unshift(genMock());
             displayData();
         });
@@ -107,7 +108,7 @@
     <div id="back-to-main"><a href="/" >Back to Main Page</a></div>
     <div class="container">
             <div class="page-header">
-                <h1>Last <span id="rNumber">10</span> HTTP requests</h1>
+                <h1>Last 10 HTTP requests</h1>
             </div>
         <ol class="list-group" id="logList">
           <li class="list-group-item" id="1">Cras justo odio</li>
